@@ -1,38 +1,38 @@
-<header>
-	<h1>Eat Da Burger!</h1>
-</header>
+<h1>Burgers!</h1>
 
-<div class="wrapper">
-	<div id="create-burger">
-		<form action="/burgers" method="POST">
-			<input id="burger_name" type="text" name="burger_name" placeholder="Cook your own burger!">
-			<button id="submit-btn" type="submit">Submit</button>
-		</form>
-	</div>
+<h2>Burgers that are ready</h2>
 
-	<section id="burgers-container">
- <div id="burgernoteaten"class="col-4 col-md-4  col-sm-6">
-   <h2>Burgers Not Eaten</h2>
-    <div class="col-12 col-md-12 col-sm-6">
-       <ul class="noteaten">
-      {{#each burgers}}
-       {{#unless this.devoured}}
-      <li class="list-group-item">
-        <form action="/burgers/{{this.id}}?_method=PUT" method="POST">
-          <button type="submit" class='burgerAvailable'> {{this.burger_name}}</button>
-        </form>
-      </li>
-      {{/unless}} {{/each}}
-      </ul>
-    </div>
+<ul>
+  {{#each burgers}}
+    {{#unless devoured}}
+      {{> burgers/burger-block devoured=false}}
+    {{/unless}}
+  {{/each}}
+</ul>
+
+<h2>Devoured Burgers!</h2>
+
+<ul>
+  {{#each burgers}}
+    {{#if devoured}}
+      {{> burgers/burger-block devoured=true}}
+    {{/if}}
+  {{/each}}
+</ul>
+
+<h2>Create a burger</h2>
+<form class="create-form">
+
+  <div class="form-group">
+    <label for="ca">Burger Name:</label>
+    <input type="text" id="ca" name="name">
   </div>
-		<div id="burgers-devoured">
-			<h2>Burgers Devoured</h2>
-			{{#each burgers}}
-				{{#if this.devoured}}
-				  <div class="burger">{{burger_name}} <span>#{{id}}</span></div>
-				{{/if}}
-			{{/each}}
-		</div>
-	</section>
-</div>
+
+  {{!-- <div class="form-group">
+    <label for="devoured">Eat right away?</label><br>
+    <input type="radio" name="devoured" value="1" checked> Yes!<br>
+    <input type="radio" name="devoured" value="0"> No
+  </div> --}}
+
+  <button type="submit">Add Burger</button>
+</form>

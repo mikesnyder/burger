@@ -1,28 +1,25 @@
-var orm = require("../config/orm");
+// Import the ORM to create functions that will interact with the database.
+const path = require("path");
+var orm = require(path.join(__dirname + "/../config/orm.js"));
 
 var burger = {
-	all: function(cb) {
-		orm.all("burgers", function(res) {
-			cb(res);
-		});
-	},
-	create: function(cols, vals, cb) {
-		orm.create("burgers", cols, vals, function(res) {
-			console.log("create:"
-			+ res)
-			cb(res);
-		});
-	},
-	update: function(id, cb) {
-		orm.update({id, devoured: 1},
-			cb
-		);
-	},
-	delete: function(condition, cb) {
-		orm.delete("burgers", condition, function(res) {
-		  cb(res);
-		});
-	  }
-};
+    getBurgers: function(cb){
+        orm.selectAll("burgers", function(response){ 
+            cb(response);
+        });
+    },
+    
+    newBurger: function(name, cb){
+        orm.insertOne("burgers", "name", name, function(response){
+            cb(response);
+        });
+    },
+    
+    devour: function(burgerId, cb){
+        orm.updateOne("burgers", "devoured", true, "id", burgerId, function(response){ 
+            cb(response);
+        });
+    }
+}
 
 module.exports = burger;
